@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAGAのキッチン日記 パート2 - 25レシピ版</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff3e0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        #welcome-screen, #kitchen-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        #kitchen-container {
+            display: none;
+        }
+        h1 {
+            color: #ff8f00;
+            font-size: 24px;
+        }
+        h2 {
+            color: #ff8f00;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        .button {
+            background-color: #ff8f00;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .button:hover {
+            background-color: #f57c00;
+        }
+        #chat-box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+        }
+        .chat-message {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .chaga-message {
+            background-color: #ffe0b2;
+            text-align: left;
+        }
+        #user-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .recipe {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+        .recipe:hover {
+            background-color: #e0e0e0;
+        }
+        #recipe-details {
+            display: none;
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="welcome-screen">
+        <h1>CHAGAのキッチン日記 パート2 - 25レシピ版へようこそ！</h1>
+        <p>こんにちは！ぼくはCHAGA、料理の友達だよ。新たに25種類の簡単で安全なレシピを教えてあげるね！</p>
+        <p><strong>注意:</strong> 火や包丁を使うときは、大人にお手伝いしてもらってね！</p>
+        <button class="button" onclick="startKitchen()">キッチンへ行く</button>
+    </div>
+    <div id="kitchen-container">
+        <h1>CHAGAのキッチン日記 パート2 - 25レシピ版</h1>
+        <h2>CHAGAと話そう</h2>
+        <div id="chat-box">
+            <div class="chat-message chaga-message">CHAGA: ねえ、どんな料理を作りたい？レシピを選ぶか、質問を教えてね！</div>
+        </div>
+        <input type="text" id="user-input" placeholder="料理や質問を入力してね..." onkeypress="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()" class="button">送信</button>
+        <h2>レシピ一覧</h2>
+        <div class="recipe" onclick="showRecipe('fruit-jelly')">フルーツゼリー</div>
+        <div class="recipe" onclick="showRecipe('veggie-wrap')">野菜ラップ</div>
+        <div class="recipe" onclick="showRecipe('apple-yogurt')">りんごヨーグルト</div>
+        <div class="recipe" onclick="showRecipe('ham-sandwich')">ハムサンドイッチ</div>
+        <div class="recipe" onclick="showRecipe('choco-toast')">チョコトースト</div>
+        <div class="recipe" onclick="showRecipe('mini-omelette')">ミニオムレツ</div>
+        <div class="recipe" onclick="showRecipe('berry-smoothie')">ベリースムージー</div>
+        <div class="recipe" onclick="showRecipe('cucumber-salad')">きゅうりサラダ</div>
+        <div class="recipe" onclick="showRecipe('peanut-butter-banana')">ピーナッツバターバナナ</div>
+        <div class="recipe" onclick="showRecipe('cheese-skewers')">チーズ串</div>
+        <div class="recipe" onclick="showRecipe('tomato-salad')">トマトサラダ</div>
+        <div class="recipe" onclick="showRecipe('fruit-cup')">フルーツカップ</div>
+        <div class="recipe" onclick="showRecipe('egg-toast')">卵トースト</div>
+        <div class="recipe" onclick="showRecipe('mini-pancake')">ミニパンケーキ</div>
+        <div class="recipe" onclick="showRecipe('veggie-sandwich')">野菜サンドイッチ</div>
+        <div class="recipe" onclick="showRecipe('choco-yogurt')">チョコヨーグルト</div>
+        <div class="recipe" onclick="showRecipe('apple-smoothie')">りんごスムージー</div>
+        <div class="recipe" onclick="showRecipe('ham-crackers')">ハムクラッカー</div>
+        <div class="recipe" onclick="showRecipe('banana-cup')">バナナカップ</div>
+        <div class="recipe" onclick="showRecipe('cheese-sandwich')">チーズサンドイッチ</div>
+        <div class="recipe" onclick="showRecipe('fruit-toast')">フルーツトースト</div>
+        <div class="recipe" onclick="showRecipe('veggie-cup')">野菜カップ</div>
+        <div class="recipe" onclick="showRecipe('yogurt-smoothie')">ヨーグルトスムージー</div>
+        <div class="recipe" onclick="showRecipe('mini-taco')">ミニタコス</div>
+        <div class="recipe" onclick="showRecipe('choco-crackers')">チョコクラッカー</div>
+        <div id="recipe-details"></div>
+    </div>
+
+    <script>
+        // キッチン画面に進む関数
+        function startKitchen() {
+            document.getElementById("welcome-screen").style.display = "none";
+            document.getElementById("kitchen-container").style.display = "block";
+        }
+
+        // メッセージ送信関数
+        function sendMessage() {
+            const input = document.getElementById("user-input");
+            const chatBox = document.getElementById("chat-box");
+            const userText = input.value.trim().toLowerCase();
+
+            if (userText === "") return;
+
+            const userMessage = document.createElement("div");
+            userMessage.className = "chat-message chaga-message";
+            userMessage.innerText = "わたし: " + input.value;
+            chatBox.appendChild(userMessage);
+
+            const chagaMessage = document.createElement("div");
+            chagaMessage.className = "chat-message chaga-message";
+            chagaMessage.innerText = "CHAGA: " + getChagaResponse(userText);
+            chatBox.appendChild(chagaMessage);
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // CHAGAの応答関数
+        function getChagaResponse(userText) {
+            if (userText.includes("サンドイッチ") || userText.includes("sandwich")) return "サンドイッチなら「ハムサンドイッチ」や「チーズサンドイッチ」がおすすめだよ！下をチェックしてね！";
+            if (userText.includes("パンケーキ") || userText.includes("pancake")) return "パンケーキなら「ミニパンケーキ」があるよ！下をクリックしてね。火を使うときは大人に手伝ってもらおう！";
+            if (userText.includes("フルーツ") || userText.includes("fruit")) return "フルーツを使ったレシピなら「フルーツゼリー」や「フルーツカップ」がおすすめだよ！下をチェックして！";
+            if (userText.includes("ヨーグルト") || userText.includes("yogurt")) return "ヨーグルトなら「りんごヨーグルト」や「ヨーグルトスムージー」がいいよ！下を見てみてね！";
+            if (userText.includes("スムージー") || userText.includes("smoothie")) return "スムージーは「ベリースムージー」や「りんごスムージー」がおすすめだよ！下を試してみて！";
+            if (userText.includes("簡単") || userText.includes("おすすめ")) return "簡単なおすすめは「ハムサンドイッチ」や「チョコクラッカー」だよ！下のレシピをチェックしてみて！";
+            return "なるほど！どんな料理が作りたいか教えてくれる？下のレシピ一覧から選んでみてね！";
+        }
+
+        // レシピ詳細表示関数
+        function showRecipe(recipe) {
+            const details = document.getElementById("recipe-details");
+            let content = "";
+
+            if (recipe === "fruit-jelly") {
+                content = `
+                    <h3>フルーツゼリー</h3>
+                    <p><strong>材料:</strong> ゼリー1個、フルーツ（ぶどうやみかん）適量</p>
+                    <p><strong>手順:</strong>
+                    1. ゼリーをカップに入れる。
+                    2. フルーツをのせる。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "veggie-wrap") {
+                content = `
+                    <h3>野菜ラップ</h3>
+                    <p><strong>材料:</strong> トルティーヤ1枚、レタス2枚、きゅうり1/2本、ドレッシング適量</p>
+                    <p><strong>手順:</strong>
+                    1. きゅうりを薄く切る（包丁は大人と一緒にね！）。
+                    2. トルティーヤにレタスときゅうりをのせる。
+                    3. ドレッシングをかけて巻く。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "apple-yogurt") {
+                content = `
+                    <h3>りんごヨーグルト</h3>
+                    <p><strong>材料:</strong> ヨーグルト200g、りんご1/2個</p>
+                    <p><strong>手順:</strong>
+                    1. りんごを小さく切る（包丁は大人と一緒にね！）。
+                    2. ヨーグルトに混ぜる。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "ham-sandwich") {
+                content = `
+                    <h3>ハムサンドイッチ</h3>
+                    <p><strong>材料:</strong> 食パン2枚、ハム2枚、マヨネーズ適量</p>
+                    <p><strong>手順:</strong>
+                    1. パンにマヨネーズを塗る。
+                    2. ハムをのせる。
+                    3. もう1枚のパンで挟む。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "choco-toast") {
+                content = `
+                    <h3>チョコトースト</h3>
+                    <p><strong>材料:</strong> 食パン1枚、チョコソース適量</p>
+                    <p><strong>手順:</strong>
+                    1. パンをトースターで焼く（大人に任せてね！）。
+                    2. チョコソースを塗る。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> トースターを使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "mini-omelette") {
+                content = `
+                    <h3>ミニオムレツ</h3>
+                    <p><strong>材料:</strong> 卵1個、牛乳大さじ1、塩少々</p>
+                    <p><strong>手順:</strong>
+                    1. 卵と牛乳、塩を混ぜる。
+                    2. 小さいフライパンで焼く（大人に任せてね！）。
+                    3. ひっくり返して両面焼く。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 火を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "berry-smoothie") {
+                content = `
+                    <h3>ベリースムージー</h3>
+                    <p><strong>材料:</strong> いちご5個、ブルーベリー10個、牛乳200ml</p>
+                    <p><strong>手順:</strong>
+                    1. フルーツを洗う。
+                    2. ミキサーにフルーツと牛乳を入れる（大人に任せてね！）。
+                    3. 混ぜてグラスに注ぐ。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> ミキサーを使うときは大人に手伝ってもらおう！</p>
+                `;
+            } else if (recipe === "cucumber-salad") {
+                content = `
+                    <h3>きゅうりサラダ</h3>
+                    <p><strong>材料:</strong> きゅうり1本、ドレッシング適量</p>
+                    <p><strong>手順:</strong>
+                    1. きゅうりを洗って薄く切る（包丁は大人と一緒にね！）。
+                    2. ドレッシングをかける。
+                    3. 混ぜて完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "peanut-butter-banana") {
+                content = `
+                    <h3>ピーナッツバターバナナ</h3>
+                    <p><strong>材料:</strong> バナナ1本、ピーナッツバター大さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. バナナを輪切りにする。
+                    2. ピーナッツバターを塗る。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "cheese-skewers") {
+                content = `
+                    <h3>チーズ串</h3>
+                    <p><strong>材料:</strong> チーズ（一口大）5個、ぶどう5個、串3本</p>
+                    <p><strong>手順:</strong>
+                    1. チーズとぶどうを串に刺す。
+                    2. そのまま食べる！
+                    3. 完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "tomato-salad") {
+                content = `
+                    <h3>トマトサラダ</h3>
+                    <p><strong>材料:</strong> ミニトマト5個、ドレッシング適量</p>
+                    <p><strong>手順:</strong>
+                    1. ミニトマトを洗って半分に切る（包丁は大人と一緒にね！）。
+                    2. ドレッシングをかける。
+                    3. 混ぜて完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "fruit-cup") {
+                content = `
+                    <h3>フルーツカップ</h3>
+                    <p><strong>材料:</strong> みかん1個、ぶどう5個、パイナップル適量</p>
+                    <p><strong>手順:</strong>
+                    1. フルーツを洗う。
+                    2. カップに入れる。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "egg-toast") {
+                content = `
+                    <h3>卵トースト</h3>
+                    <p><strong>材料:</strong> 食パン1枚、ゆで卵1個、マヨネーズ小さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. ゆで卵を潰してマヨネーズと混ぜる（ゆで卵は大人が作ってね！）。
+                    2. パンをトースターで焼く（大人に任せてね！）。
+                    3. 卵を塗って完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> トースターを使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "mini-pancake") {
+                content = `
+                    <h3>ミニパンケーキ</h3>
+                    <p><strong>材料:</strong> 薄力粉50g、卵1個、牛乳50ml、砂糖小さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. 材料を混ぜる。
+                    2. 小さいフライパンで小さく焼く（大人に任せてね！）。
+                    3. 両面焼いて完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 火を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "veggie-sandwich") {
+                content = `
+                    <h3>野菜サンドイッチ</h3>
+                    <p><strong>材料:</strong> 食パン2枚、レタス2枚、トマト1/2個、マヨネーズ適量</p>
+                    <p><strong>手順:</strong>
+                    1. トマトを薄く切る（包丁は大人と一緒にね！）。
+                    2. パンにマヨネーズを塗り、レタスとトマトをのせる。
+                    3. もう1枚のパンで挟む。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "choco-yogurt") {
+                content = `
+                    <h3>チョコヨーグルト</h3>
+                    <p><strong>材料:</strong> ヨーグルト200g、チョコソース適量</p>
+                    <p><strong>手順:</strong>
+                    1. ヨーグルトにチョコソースをかける。
+                    2. 混ぜて食べる！
+                    3. 完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "apple-smoothie") {
+                content = `
+                    <h3>りんごスムージー</h3>
+                    <p><strong>材料:</strong> りんご1個、牛乳200ml、はちみつ小さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. りんごを洗って小さく切る（包丁は大人と一緒にね！）。
+                    2. ミキサーにりんご、牛乳、はちみつを入れる（大人に任せてね！）。
+                    3. 混ぜてグラスに注ぐ。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> ミキサーを使うときは大人に手伝ってもらおう！</p>
+                `;
+            } else if (recipe === "ham-crackers") {
+                content = `
+                    <h3>ハムクラッカー</h3>
+                    <p><strong>材料:</strong> クラッカー5枚、ハム2枚</p>
+                    <p><strong>手順:</strong>
+                    1. ハムをクラッカーのサイズに切る（大人に手伝ってもらうね！）。
+                    2. クラッカーにハムをのせる。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "banana-cup") {
+                content = `
+                    <h3>バナナカップ</h3>
+                    <p><strong>材料:</strong> バナナ1本、ヨーグルト100g</p>
+                    <p><strong>手順:</strong>
+                    1. バナナを輪切りにする。
+                    2. カップにヨーグルトを入れ、バナナをのせる。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "cheese-sandwich") {
+                content = `
+                    <h3>チーズサンドイッチ</h3>
+                    <p><strong>材料:</strong> 食パン2枚、スライスチーズ1枚、マヨネーズ適量</p>
+                    <p><strong>手順:</strong>
+                    1. パンにマヨネーズを塗る。
+                    2. チーズをのせる。
+                    3. もう1枚のパンで挟む。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "fruit-toast") {
+                content = `
+                    <h3>フルーツトースト</h3>
+                    <p><strong>材料:</strong> 食パン1枚、フルーツ（いちごやバナナ）適量、クリームチーズ小さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. パンをトースターで焼く（大人に任せてね！）。
+                    2. クリームチーズを塗る。
+                    3. フルーツをのせて完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> トースターを使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "veggie-cup") {
+                content = `
+                    <h3>野菜カップ</h3>
+                    <p><strong>材料:</strong> ミニトマト5個、きゅうり1/2本、ドレッシング適量</p>
+                    <p><strong>手順:</strong>
+                    1. 野菜を洗って小さく切る（包丁は大人と一緒にね！）。
+                    2. カップに入れる。
+                    3. ドレッシングをかけて完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁を使うときは大人に手伝ってもらうよ！</p>
+                `;
+            } else if (recipe === "yogurt-smoothie") {
+                content = `
+                    <h3>ヨーグルトスムージー</h3>
+                    <p><strong>材料:</strong> ヨーグルト100g、バナナ1本、牛乳100ml</p>
+                    <p><strong>手順:</strong>
+                    1. バナナを小さく切る。
+                    2. ミキサーにヨーグルト、バナナ、牛乳を入れる（大人に任せてね！）。
+                    3. 混ぜてグラスに注ぐ。
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> ミキサーを使うときは大人に手伝ってもらおう！</p>
+                `;
+            } else if (recipe === "mini-taco") {
+                content = `
+                    <h3>ミニタコス</h3>
+                    <p><strong>材料:</strong> トルティーヤ1枚、チーズ適量、レタス少々、サルサソース小さじ1</p>
+                    <p><strong>手順:</strong>
+                    1. トルティーヤにレタス、チーズ、サルサをのせる。
+                    2. 半分に折る。
+                    3. そのまま食べる！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            } else if (recipe === "choco-crackers") {
+                content = `
+                    <h3>チョコクラッカー</h3>
+                    <p><strong>材料:</strong> クラッカー5枚、チョコソース適量</p>
+                    <p><strong>手順:</strong>
+                    1. クラッカーにチョコソースを塗る。
+                    2. そのまま食べる！
+                    3. 完成！
+                    4. 完成！</p>
+                    <p><strong>注意:</strong> 包丁は使わないから安心だよ！</p>
+                `;
+            }
+
+            details.innerHTML = content;
+            details.style.display = "block";
+        }
+    </script>
+</body>
+</html>
